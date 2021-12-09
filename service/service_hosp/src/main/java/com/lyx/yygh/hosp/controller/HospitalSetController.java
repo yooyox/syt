@@ -1,5 +1,6 @@
 package com.lyx.yygh.hosp.controller;
 
+import com.lyx.yygh.common.result.Result;
 import com.lyx.yygh.model.hosp.HospitalSet;
 import com.lyx.yygh.hosp.service.HospitalSetService;
 import io.swagger.annotations.Api;
@@ -20,18 +21,18 @@ public class HospitalSetController {
     //1 查询医院设置表中的所有信息
     @ApiOperation(value = "查询医院设置表中的所有信息")
     @GetMapping("findAll")
-    public List<HospitalSet> findAllHospitalSet() {
+    public Result findAllHospitalSet() {
         //调用service的方法
         List<HospitalSet> list = hospitalSetService.list();
-        return list;
+        return Result.ok(list);
     }
 
     //2 根据id逻辑删除医院设置表中的信息
     @ApiOperation(value = "根据id逻辑删除医院设置表中的信息")
     @DeleteMapping("{id}")
-    public boolean removeHospSet(@PathVariable Long id) {
+    public Result removeHospSet(@PathVariable Long id) {
         boolean flag = hospitalSetService.removeById(id);
-        return flag;
+        return flag ? Result.ok() : Result.fail();
     }
 
 

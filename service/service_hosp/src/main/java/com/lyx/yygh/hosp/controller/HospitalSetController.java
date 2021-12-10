@@ -105,6 +105,31 @@ public class HospitalSetController {
         return Result.ok();
     }
 
+    //8.医院设置锁定和解锁
+    @ApiOperation(value = "医院设置-锁定和解锁")
+    @PutMapping("lockHospitalSet/{id}/{status}")
+    public Result lockHospitalSet(@PathVariable Long id,
+                                  @PathVariable Integer status) {
+        //8.1根据id查询医院设置信息
+        HospitalSet hospitalSet = hospitalSetService.getById(id);
+        //8.2设置status  1是能使用。0是不能使用
+        hospitalSet.setStatus(status);
+        //8.3调用修改方法
+        hospitalSetService.updateById(hospitalSet);
+        return Result.ok();
+    }
+
+    //9.TODO 发送签名密钥（未完成）
+    @ApiOperation(value = "医院设置-发送签名密钥")
+    @PutMapping("sendKey/{id}")
+    public Result lockHospitalSet(@PathVariable Long id) {
+        HospitalSet hospitalSet = hospitalSetService.getById(id);
+        String signKey = hospitalSet.getSignKey();
+        String hoscode = hospitalSet.getHoscode();
+        //TODO 发送短信
+        return Result.ok();
+    }
+
 
 
 

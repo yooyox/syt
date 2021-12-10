@@ -25,7 +25,7 @@ public class HospitalSetController {
     private HospitalSetService hospitalSetService;
 
     //1 查询医院设置表中的所有信息
-    @ApiOperation(value = "查询医院设置表中的所有信息")
+    @ApiOperation(value = "医院设置-查询所有信息")
     @GetMapping("findAll")
     public Result findAllHospitalSet() {
         //调用service的方法
@@ -34,14 +34,15 @@ public class HospitalSetController {
     }
 
     //2 根据id逻辑删除医院设置表中的信息
-    @ApiOperation(value = "根据id逻辑删除医院设置表中的信息")
+    @ApiOperation(value = "医院设置-根据id逻辑删除")
     @DeleteMapping("{id}")
     public Result removeHospSet(@PathVariable Long id) {
         boolean flag = hospitalSetService.removeById(id);
         return flag ? Result.ok() : Result.fail();
     }
 
-    //3.分页条件查询
+    //3.分页条件查询医院设置
+    @ApiOperation(value = "医院设置-分页条件查询")
     @PostMapping("findHospitalSetByPage/{current}/{limit}")
     public Result findHospitalSetByPage(@PathVariable long current, @PathVariable long limit,
                                         @RequestBody(required = false) HospitalSetQueryVo hospitalSetQueryVo) {
@@ -66,6 +67,7 @@ public class HospitalSetController {
     }
 
     //4.添加医院设置
+    @ApiOperation(value = "医院设置-添加")
     @PostMapping("addHospitalSet")
     public Result addHospitalSet(@RequestBody HospitalSet hospitalSet) {
         //4.1 设置添加的值
@@ -78,6 +80,31 @@ public class HospitalSetController {
         boolean isAdd = hospitalSetService.save(hospitalSet);
         return isAdd ? Result.ok() : Result.fail();
     }
+
+    //5.根据id查询医院设置
+    @ApiOperation(value = "医院设置-根据id查询")
+    @GetMapping("getHospSetById/{id}")
+    public Result getHospSetById(@PathVariable Long id) {
+        HospitalSet hospitalSet = hospitalSetService.getById(id);
+        return Result.ok(hospitalSet);
+    }
+
+    //6.修改医院设置
+    @ApiOperation(value = "医院设置-修改")
+    @PostMapping("updateHospitalSet")
+    public Result updateHospitalSet(@RequestBody HospitalSet hospitalSet) {
+        boolean isUpdate = hospitalSetService.updateById(hospitalSet);
+        return isUpdate ? Result.ok() : Result.fail();
+    }
+
+    //7.批量删除医院设置
+    @ApiOperation(value = "医院设置-批量删除")
+    @DeleteMapping("batchRemoveHospitalSet")
+    public Result batchRemoveHospitalSet(@RequestBody List<Long> idList) {
+        hospitalSetService.removeByIds(idList);
+        return Result.ok();
+    }
+
 
 
 

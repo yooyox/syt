@@ -3,6 +3,7 @@ package com.lyx.yygh.hosp.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lyx.yygh.common.result.Result;
+import com.lyx.yygh.common.utils.MD5;
 import com.lyx.yygh.model.hosp.HospitalSet;
 import com.lyx.yygh.hosp.service.HospitalSetService;
 import com.lyx.yygh.vo.hosp.HospitalSetQueryVo;
@@ -13,6 +14,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Random;
 
 @Api(tags = "医院设置管理")
 @RestController
@@ -61,8 +63,22 @@ public class HospitalSetController {
         //3.4 得到返回结果
         return Result.ok(pageHospitalSet);
 
-
     }
+
+    //4.添加医院设置
+    @PostMapping("addHospitalSet")
+    public Result addHospitalSet(@RequestBody HospitalSet hospitalSet) {
+        //4.1 设置添加的值
+        //状态 1 能使用 0 不能使用
+        hospitalSet.setStatus(1);
+        //签名秘钥
+        Random random = new Random();
+        hospitalSet.setSignKey(MD5.encrypt(System.currentTimeMillis()+""+random.nextInt(1000)));
+        //4.2 调用添加方法
+        boolean isAdd = hospitalSetService.save(hospitalSet);
+        return isAdd ? Result.ok() : Result.fail();
+    }
+
 
 
 }
